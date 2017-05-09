@@ -15,7 +15,7 @@ type Episode struct {
 	Channel     string `json:"channel,omitempty"`
 	ChannelLogo string `json:"channelLogo,omitempty"`
 	Date        string `json:"date,omitempty"`
-	Html        string `json:"html,omitempty"`
+	HTML        string `json:"html,omitempty"`
 	URL         string `json:"url,omitempty"`
 }
 
@@ -42,8 +42,8 @@ type TVShow struct {
 	TVChannel     string     `json:"tvChannel,omitempty"`
 }
 
-// RequestJson is the base structure of a requests body in JSON format.
-type RequestJson struct {
+// RequestJSON is the base structure of a requests body in JSON format.
+type RequestJSON struct {
 	// Payload is a slice of tv shows.
 	Payload []*TVShow `json:"payload,omitempty"`
 }
@@ -55,9 +55,9 @@ type ResponseItem struct {
 	Title string `json:"title,omitempty"`
 }
 
-// ResponseJson contains a payload of information to be send as a
+// ResponseJSON contains a payload of information to be send as a
 // JSON response.
-type ResponseJson struct {
+type ResponseJSON struct {
 	Payload []*ResponseItem `json:"response,omitempty"`
 }
 
@@ -65,7 +65,7 @@ type ResponseJson struct {
 // JSON data should contain a `payload` field which maps to a array of
 // tv shows.
 func ParseRequestJSON(data []byte) ([]*TVShow, error) {
-	reqData := &RequestJson{}
+	reqData := &RequestJSON{}
 
 	err := json.Unmarshal(data, reqData)
 	if err != nil {
@@ -99,9 +99,9 @@ func FilterTVShowsWithEpisodes(shows []*TVShow) []*TVShow {
 	return filtered
 }
 
-// MakeResponseJson takes tv shows and returns a response
+// MakeResponseJSON takes tv shows and returns a response
 // in the form of a JSON formatted byte array.
-func MakeResponseJson(shows []*TVShow) ([]byte, error) {
+func MakeResponseJSON(shows []*TVShow) ([]byte, error) {
 	payload := make([]*ResponseItem, len(shows))
 
 	for index, show := range shows {
@@ -113,7 +113,7 @@ func MakeResponseJson(shows []*TVShow) ([]byte, error) {
 	}
 
 	return json.Marshal(
-		&ResponseJson{
+		&ResponseJSON{
 			Payload: payload,
 		},
 	)

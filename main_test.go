@@ -69,7 +69,7 @@ func TestGetListenPort__FailedConvertToIntFromEnvVar(t *testing.T) {
 	assert.Equal(t, 8000, port)
 }
 func TestTvShowJsonHandler(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(TvShowJsonHandler))
+	server := httptest.NewServer(http.HandlerFunc(TvShowJSONHandler))
 	defer server.Close()
 
 	r := bytes.NewReader([]byte(""))
@@ -78,7 +78,7 @@ func TestTvShowJsonHandler(t *testing.T) {
 
 	assert.Equal(t, http.StatusBadRequest, res.StatusCode)
 
-	httpErr := &HttpJSONParseError{}
+	httpErr := &HTTPJSONParseError{}
 	payload, _ := ioutil.ReadAll(res.Body)
 	err = json.Unmarshal(payload, httpErr)
 	assert.Nil(t, err)
@@ -91,7 +91,7 @@ func TestTvShowJsonHandler(t *testing.T) {
 }
 
 func TestTvShowJsonHandler__PostWithValidJSONButIncorrectData(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(TvShowJsonHandler))
+	server := httptest.NewServer(http.HandlerFunc(TvShowJSONHandler))
 	defer server.Close()
 
 	r := bytes.NewReader([]byte("{}"))
@@ -105,7 +105,7 @@ func TestTvShowJsonHandler__PostWithValidJSONButIncorrectData(t *testing.T) {
 }
 
 func TestTvShowJsonHandler__PostValidRequestJSONData(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(TvShowJsonHandler))
+	server := httptest.NewServer(http.HandlerFunc(TvShowJSONHandler))
 	defer server.Close()
 
 	requestData, err := ioutil.ReadFile("testdata/request.json")
@@ -120,7 +120,7 @@ func TestTvShowJsonHandler__PostValidRequestJSONData(t *testing.T) {
 	payload, err := ioutil.ReadAll(res.Body)
 	assert.Nil(t, err)
 
-	resp := &ResponseJson{}
+	resp := &ResponseJSON{}
 	err = json.Unmarshal(payload, resp)
 	assert.Nil(t, err)
 
@@ -201,10 +201,10 @@ func TestModel_MakeResponseJson(t *testing.T) {
 	data, err := ParseRequestJSON([]byte(mockRequestData))
 	assert.Nil(t, err)
 
-	response, err := MakeResponseJson(data)
+	response, err := MakeResponseJSON(data)
 	assert.Nil(t, err)
 
-	expectedResponseJSON := &ResponseJson{}
+	expectedResponseJSON := &ResponseJSON{}
 	err = json.Unmarshal(response, expectedResponseJSON)
 	assert.Nil(t, err)
 

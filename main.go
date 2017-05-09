@@ -12,9 +12,9 @@ import (
 
 const defaultPort int = 8000
 
-// HttpJSONParseError is a error which is raise if any of the
+// HTTPJSONParseError is a error which is raise if any of the
 // request handlers have issues parsing JSON formatted data.
-type HttpJSONParseError struct {
+type HTTPJSONParseError struct {
 	Error string `json:"error"`
 }
 
@@ -48,12 +48,12 @@ func GetListenPort() int {
 	return port
 }
 
-// TvShowJsonHandler is a handler which parses a JSON formatted
+// TvShowJSONHandler is a handler which parses a JSON formatted
 // request body and filters for tv shows which has DRM enabled and
 // has one or more episodes.
-func TvShowJsonHandler(w http.ResponseWriter, req *http.Request) {
+func TvShowJSONHandler(w http.ResponseWriter, req *http.Request) {
 	httpError, _ := json.Marshal(
-		HttpJSONParseError{
+		HTTPJSONParseError{
 			Error: "Could not decode request: JSON parsing failed",
 		},
 	)
@@ -89,7 +89,7 @@ func TvShowJsonHandler(w http.ResponseWriter, req *http.Request) {
 			shows = FilterTVShowsForDRM(shows)
 			shows = FilterTVShowsWithEpisodes(shows)
 
-			response, err := MakeResponseJson(shows)
+			response, err := MakeResponseJSON(shows)
 			if err != nil {
 				logger.Printf("Original Body: %s", body)
 				logger.Printf(
@@ -112,7 +112,7 @@ func TvShowJsonHandler(w http.ResponseWriter, req *http.Request) {
 
 // RunServer starts the server and accepts connections.
 func RunServer(port int) error {
-	http.HandleFunc("/", TvShowJsonHandler)
+	http.HandleFunc("/", TvShowJSONHandler)
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }
 
