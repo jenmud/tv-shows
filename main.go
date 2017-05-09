@@ -12,13 +12,15 @@ import (
 
 const defaultPort int = 8000
 
+// HttpJSONParseError is a error which is raise if any of the
+// request handlers have issues parsing JSON formatted data.
 type HttpJSONParseError struct {
 	Error string `json:"error"`
 }
 
 var logger = log.New(os.Stdout, "", log.LstdFlags)
 
-// getIntFromEnvvar converts the environment variable into a integer.
+// getIntFromEnvvar gets and converts the environment variable into a integer.
 func getIntFromEnvvar(key string) (int, error) {
 	value, ok := os.LookupEnv(key)
 
@@ -33,9 +35,10 @@ func getIntFromEnvvar(key string) (int, error) {
 	return 0, fmt.Errorf("Could not find environment variable %q", key)
 }
 
-// GetListenPort returns a port number which can be used for the web server.
+// GetListenPort returns a port number which can be used for the server as
+// a listening port to accept client connections.
 // It will first check and use the environment variable `PORT` if
-// found else it will return the default numer 8000.
+// found else it will return the default number 8000.
 func GetListenPort() int {
 	port, err := getIntFromEnvvar("PORT")
 	if err != nil {
@@ -45,7 +48,10 @@ func GetListenPort() int {
 	return port
 }
 
-func Index(w http.ResponseWriter, req *http.Request) {
+// TvShowJsonHandler is a handler which parses a JSON formatted
+// request body and filters for tv shows which has DRM enabled and
+// has one or more episodes.
+func TvShowJsonHandler(w http.ResponseWriter, req *http.Request) {
 	httpError, _ := json.Marshal(
 		HttpJSONParseError{
 			Error: "Could not decode request: JSON parsing failed",
@@ -82,8 +88,8 @@ func Index(w http.ResponseWriter, req *http.Request) {
 
 			shows = FilterTVShowsForDRM(shows)
 			shows = FilterTVShowsWithEpisodes(shows)
-			response, err := MakeResponseJson(shows)
 
+			response, err := MakeResponseJson(shows)
 			if err != nil {
 				logger.Printf("Original Body: %s", body)
 				logger.Printf(
@@ -104,11 +110,15 @@ func Index(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// RunServer starts the server and accepts connections.
+func RunServer(port int) error {
+	http.HandleFunc("/", TvShowJsonHandler)
+	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+}
+
+// main is the entry point.
 func main() {
 	port := GetListenPort()
-
-	http.HandleFunc("/", Index)
-
 	logger.Printf("Listening on %d\n", port)
-	logger.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
+	logger.Fatal(RunServer(port))
 }

@@ -42,7 +42,7 @@ type TVShow struct {
 	TVChannel     string     `json:"tvChannel,omitempty"`
 }
 
-// RequestJson is the base structure of a requests JSON formatted data.
+// RequestJson is the base structure of a requests body in JSON format.
 type RequestJson struct {
 	// Payload is a slice of tv shows.
 	Payload []*TVShow `json:"payload,omitempty"`
@@ -55,13 +55,13 @@ type ResponseItem struct {
 	Title string `json:"title,omitempty"`
 }
 
-// ResponseJson contains payload information to be send as a
+// ResponseJson contains a payload of information to be send as a
 // JSON response.
 type ResponseJson struct {
 	Payload []*ResponseItem `json:"response,omitempty"`
 }
 
-// ParseRequestJSON takes a JSON formatted byte array, parses the JSON.
+// ParseRequestJSON takes a JSON formatted byte array.
 // JSON data should contain a `payload` field which maps to a array of
 // tv shows.
 func ParseRequestJSON(data []byte) ([]*TVShow, error) {
@@ -75,7 +75,7 @@ func ParseRequestJSON(data []byte) ([]*TVShow, error) {
 	return reqData.Payload, nil
 }
 
-// FilterTVShowsForDRM filters out all tv shows that does not have a
+// FilterTVShowsForDRM filters out all tv shows that do not have a their
 // DRM enabled.
 func FilterTVShowsForDRM(shows []*TVShow) []*TVShow {
 	filtered := []*TVShow{}

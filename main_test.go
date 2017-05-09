@@ -68,9 +68,8 @@ func TestGetListenPort__FailedConvertToIntFromEnvVar(t *testing.T) {
 	port := GetListenPort()
 	assert.Equal(t, 8000, port)
 }
-
-func TestIndexHandler__PostWithNobody(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(Index))
+func TestTvShowJsonHandler(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(TvShowJsonHandler))
 	defer server.Close()
 
 	r := bytes.NewReader([]byte(""))
@@ -91,8 +90,8 @@ func TestIndexHandler__PostWithNobody(t *testing.T) {
 	)
 }
 
-func TestIndexHandler__PostWithValidJSONButIncorrectData(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(Index))
+func TestTvShowJsonHandler__PostWithValidJSONButIncorrectData(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(TvShowJsonHandler))
 	defer server.Close()
 
 	r := bytes.NewReader([]byte("{}"))
@@ -105,8 +104,8 @@ func TestIndexHandler__PostWithValidJSONButIncorrectData(t *testing.T) {
 	assert.Equal(t, "{}", string(payload))
 }
 
-func TestIndexHandler__PostValidRequestJSONData(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(Index))
+func TestTvShowJsonHandler__PostValidRequestJSONData(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(TvShowJsonHandler))
 	defer server.Close()
 
 	requestData, err := ioutil.ReadFile("testdata/request.json")
