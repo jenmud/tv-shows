@@ -106,7 +106,7 @@ A 400 Bad Request HTTP status is returned if it could not parse the JSON data.
 ## Testing
 To test that all is working as expected, run the following commands below (Linux with `curl` installed is assumed)
 
-First download the [sample data here](tv-shows/testdata/request.json)
+First download the [sample data here](https://raw.githubusercontent.com/jenmud/tv-shows/master/testdata/request.json)
 
 ```bash
 $ curl https://raw.githubusercontent.com/jenmud/tv-shows/master/testdata/request.json > request.json
