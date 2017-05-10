@@ -49,7 +49,7 @@ Example of a JSON post containing one TV show:
 }
 ```
 
-## Supported fields for a TV show in the `payload`
+### Supported fields for a TV show object
 
 
 | Key           | Value   |
@@ -67,6 +67,32 @@ Example of a JSON post containing one TV show:
 | slug          | string  |
 | title         | string  |
 | tvChannel     | string  |
+
+## Successful POST
+On a successful POST, the expected JSON response format should contain a `response` field mapping to a `array` of simplified information objects.
+
+Example response object based on the above example:
+
+```
+{
+    "response": [
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/TheOriginals1280.jpg",
+            "slug": "show/theoriginals",
+            "title": "The Originals"
+        }
+    ]
+}
+
+```
+### Supported fields for a JSON response`
+
+
+| Key           | Value   |
+| ------------- |:-------:|
+| image         | string  |
+| slug          | string  |
+| title         | string   |
 
 ## Errors
 A 400 Bad Request HTTP status is returned if it could not parse the JSON data.
