@@ -66,11 +66,9 @@ func TvShowJSONHandler(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
 	if err != nil {
-		http.Error(
-			w,
-			string(httpError),
-			http.StatusBadRequest,
-		)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(httpError)
+
 	} else {
 		shows, err := ParseRequestJSON(body)
 
@@ -78,11 +76,8 @@ func TvShowJSONHandler(w http.ResponseWriter, req *http.Request) {
 			logger.Printf("Original Body: %s", body)
 			logger.Printf("Request JSON parsing error: %s", err)
 
-			http.Error(
-				w,
-				string(httpError),
-				http.StatusBadRequest,
-			)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(httpError)
 
 		} else {
 
@@ -97,13 +92,11 @@ func TvShowJSONHandler(w http.ResponseWriter, req *http.Request) {
 					err,
 				)
 
-				http.Error(
-					w,
-					string(httpError),
-					http.StatusBadRequest,
-				)
+				w.WriteHeader(http.StatusBadRequest)
+				w.Write(httpError)
 
 			} else {
+				w.WriteHeader(http.StatusOK)
 				w.Write(response)
 			}
 		}
