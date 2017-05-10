@@ -59,7 +59,7 @@ func TvShowJSONHandler(w http.ResponseWriter, req *http.Request) {
 	)
 
 	// Because we are only dealing with JSON data, lets set the
-	// connect headers.
+	// content-type to application/json.
 	w.Header().Set("Content-Type", "application/json")
 
 	body, err := ioutil.ReadAll(req.Body)
