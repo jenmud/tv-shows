@@ -155,3 +155,6 @@ $ curl -d "@request.json" -H "Content-Type: application/json" -X POST https://mi
 }
 ```
 
+## Todo
+* There is plenty room for refactoring the HTTP handlers
+* Improve the unit tests
