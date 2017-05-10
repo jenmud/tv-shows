@@ -103,3 +103,55 @@ A 400 Bad Request HTTP status is returned if it could not parse the JSON data.
 }
 ```
 
+## Testing
+To test that all is working as expected, run the following commands below (Linux with `curl` installed is assumed)
+
+First download the [sample data here](tv-shows/testdata/request.json)
+
+```bash
+$ curl https://raw.githubusercontent.com/jenmud/tv-shows/master/testdata/request.json > request.json
+```
+
+```bash
+$ curl -d "@request.json" -H "Content-Type: application/json" -X POST https://mighty-beach-93829.herokuapp.com/ | python -m json.tool
+{
+    "response": [
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/16KidsandCounting1280.jpg",
+            "slug": "show/16kidsandcounting",
+            "title": "16 Kids and Counting"
+        },
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/TheTaste1280.jpg",
+            "slug": "show/thetaste",
+            "title": "The Taste (Le Go\u00c3\u00bbt)"
+        },
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/Thunderbirds_1280.jpg",
+            "slug": "show/thunderbirds",
+            "title": "Thunderbirds"
+        },
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/ScoobyDoo1280.jpg",
+            "slug": "show/scoobydoomysteryincorporated",
+            "title": "Scooby-Doo! Mystery Incorporated"
+        },
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/ToyHunter1280.jpg",
+            "slug": "show/toyhunter",
+            "title": "Toy Hunter"
+        },
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/Worlds1280.jpg",
+            "slug": "show/worlds",
+            "title": "World's..."
+        },
+        {
+            "image": "http://catchup.ninemsn.com.au/img/jump-in/shows/TheOriginals1280.jpg",
+            "slug": "show/theoriginals",
+            "title": "The Originals"
+        }
+    ]
+}
+```
+
